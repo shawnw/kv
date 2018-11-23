@@ -86,9 +86,7 @@ sqlite3_backend::sqlite3_backend(const char *filename) {
   }
 }
 
-sqlite3_backend::~sqlite3_backend() {
-  sqlite3_close_v2(db);
-}
+sqlite3_backend::~sqlite3_backend() { sqlite3_close_v2(db); }
 
 void sqlite3_backend::put(const char *key, const char *value) {
   auto putter =

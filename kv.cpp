@@ -56,7 +56,7 @@ int main(int argc, char **argv) {
     be backend = be::SQLITE3_DB;
     std::string nullkey{""};
     bool newline = false;
-    
+
     int arg;
     while ((arg = getopt(argc, argv, "+b:e:s:n")) != -1) {
       switch (arg) {
@@ -128,7 +128,7 @@ int main(int argc, char **argv) {
     }
     if (newline) {
       std::cout.put('\n');
-    }       
+    }
   } catch (std::exception &e) {
     std::cerr << e.what() << '\n';
     return EXIT_FAILURE;
