@@ -20,9 +20,13 @@ Usage
 * `kv [OPTIONS] delete DATABASE KEY` - removes a key from the
   database. If the key did not exist, exits with status code 2.
 
-* `kv [OPTIONS] list DATABASE` - print all keys to standard output.
+* `kv [OPTIONS] list DATABASE` - print all keys to standard
+  output. Keys will be sorted if using a sqlite backend, unsorted for
+  gdbm.
 
 `DATABASE` is the name of a file to use as the database.
+
+See `test/test1.sh` for some examples.
 
 Options
 -------
@@ -42,11 +46,12 @@ Options
 Building
 ========
 
-Dependencies include a C++ compiler, cmake, and sqlite and/or gdbm
-development packages (The exact package names depend on your OS).
+Dependencies include a C++ compiler, cmake, sqlite3 and optionally
+gdbm development packages (The exact package names depend on your OS).
 
     $ mkdir build
     $ cd build
     $ cmake -DCMAKE_BUILD_TYPE=Release ../src
-    $ cmake --build
+    $ make -j3
+    $ (cd ../test && ./test.sh)
 
