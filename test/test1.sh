@@ -15,6 +15,7 @@ fi
 ../build/kv -b $be put test.db key2 value2
 ../build/kv -b $be put test.db key3 value3
 ../build/kv -b $be put test.db key4 value4
+../build/kv -b $be put test.db key5 ""
 ../build/kv -b $be put test.db key2 value5
 
 x=$(../build/kv -b $be get test.db key1)
@@ -38,6 +39,12 @@ fi
 x=$(../build/kv -b $be -e NULL get test.db key_missing)
 if [ $? -ne 2 -o "$x" != NULL ]; then
     echo "test get 4 failed"
+    exit 1
+fi
+
+x=$(../build/kv -b $be -e NULL get test.db key5)
+if [ $? -ne 0 -o -n "$x" ]; then
+    echo "test get 5 failed"
     exit 1
 fi
 
