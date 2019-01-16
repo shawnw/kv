@@ -13,6 +13,14 @@ Usage
 * `kv [OPTIONS] put DATABASE KEY VALUE` - stores a key-value pair in
   the given database, replacing an existing value if present.
 
+* `kv [OPTIONS] add DATABASE KEY NUM` - adds `NUM` to the current
+  value of the given `KEY`. If the key doesn't exist, sets it to
+  `NUM`.
+
+* `kv [OPTIONS] append DATABASE KEY VALUE` - appends `VALUE` to the
+  current value of the given `KEY`. If the key doesn't exist, sets it
+  to `VALUE`.
+
 * `kv [OPTIONS] get DATABASE KEY` - prints the value associated with
   the key to standard output. If the key did not exist, exits with
   status code 2.

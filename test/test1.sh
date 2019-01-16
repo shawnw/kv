@@ -79,6 +79,22 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+../build/kv -b $be add test.db apple 1
+../build/kv -b $be add test.db apple 4
+x=$(../build/kv -b $be get test.db apple)
+if [ $? -ne 0 -o "$x" -ne 5 ]; then
+    echo "test add 1 failed: $x"
+    exit 1
+fi
+
+../build/kv -b $be append test.db cow foo
+../build/kv -b $be append test.db cow bar
+x=$(../build/kv -b $be get test.db cow)
+if [ $? -ne 0 -o "$x" != foobar ]; then
+    echo "test append 1 failed: $x"
+    exit 1
+fi
+
 rm -rf test.db temp.txt
 
 echo "All tests passed."

@@ -30,4 +30,6 @@ public:
   bool del(const char *key) override;
   bool get(const char *key, std::string &value) override;
   void list(std::ostream &, const std::string &sep) override;
+  void begin() override;
+  void commit() override;
 };

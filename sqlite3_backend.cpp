@@ -50,6 +50,8 @@ sqlite3_backend::sqlite3_backend(const char *filename) {
       throw std::runtime_error{"opening db: "s + err};
     }
 
+    sqlite3_busy_timeout(db, 1000);
+
     auto get_appid = prepare_stmt(db, "PRAGMA application_id");
     if (sqlite3_step(get_appid.get()) != SQLITE_ROW) {
       throw std::runtime_error{sqlite3_errmsg(db)};
@@ -141,6 +143,23 @@ void sqlite3_backend::list(std::ostream &out, const std::string &sep) {
   }
   if (rc != SQLITE_DONE) {
     throw std::runtime_error{"list: "s + sqlite3_errmsg(db)};
+  }
+}
+
+void sqlite3_backend::begin() {
+  char *errptr = nullptr;
+  if (sqlite3_exec(db, "BEGIN TRANSACTION", nullptr, nullptr, &errptr) !=
+      SQLITE_OK) {
+    throw std::runtime_error{"unable to acquire database lock: "s + errptr};
+    sqlite3_free(errptr);
+  }
+}
+
+void sqlite3_backend::commit() {
+  char *errptr = nullptr;
+  if (sqlite3_exec(db, "COMMIT", nullptr, nullptr, &errptr) != SQLITE_OK) {
+    throw std::runtime_error{"unable to commit transaction: "s + errptr};
+    sqlite3_free(errptr);
   }
 }
 

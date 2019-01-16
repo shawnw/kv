@@ -96,7 +96,7 @@ int main(int argc, char **argv) {
     const char *dbfile = argv[optind++];
     auto db = make_db(backend, dbfile);
 
-    if (strcmp(op, "list") == 0) {
+    if (std::strcmp(op, "list") == 0) {
       db->list(std::cout, sep);
     } else if (strcmp(op, "put") == 0) {
       if (optind + 1 >= argc) {
@@ -105,7 +105,7 @@ int main(int argc, char **argv) {
       const char *key = argv[optind++];
       const char *value = argv[optind++];
       db->put(key, value);
-    } else if (strcmp(op, "get") == 0) {
+    } else if (std::strcmp(op, "get") == 0) {
       if (optind >= argc) {
         throw std::invalid_argument{"Expected key to get"};
       }
@@ -116,7 +116,37 @@ int main(int argc, char **argv) {
         std::cout << nullkey;
         return 2;
       }
-    } else if (strcmp(op, "delete") == 0) {
+    } else if (std::strcmp(op, "add") == 0) {
+      if (optind + 1 >= argc) {
+        throw std::invalid_argument{"Expected key and value to put"};
+      }
+      const char *key = argv[optind++];
+      int value = std::stoi(argv[optind++]);
+      std::string existing;
+      db->begin();
+      if (db->get(key, existing)) {
+        int eval = std::stoi(existing);
+        db->put(key, std::to_string(eval + value));
+      } else {
+        db->put(key, std::to_string(value));
+      }
+      db->commit();
+    } else if (std::strcmp(op, "append") == 0) {
+      if (optind + 1 >= argc) {
+        throw std::invalid_argument{"Expected key and value to put"};
+      }
+      const char *key = argv[optind++];
+      const char *value = argv[optind++];
+      std::string existing;
+      db->begin();
+      if (db->get(key, existing)) {
+        existing += value;
+      } else {
+        existing = value;
+      }
+      db->put(key, existing);
+      db->commit();
+    } else if (std::strcmp(op, "delete") == 0) {
       if (optind >= argc) {
         throw std::invalid_argument{"Expected key to delete"};
       }

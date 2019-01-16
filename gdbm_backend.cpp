@@ -101,4 +101,7 @@ void gdbm_backend::list(std::ostream &out, const std::string &sep) {
   }
 }
 
+void gdbm_backend::begin() {}
+void gdbm_backend::commit() {}
+
 #endif

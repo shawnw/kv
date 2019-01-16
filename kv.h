@@ -21,10 +21,15 @@ class kv_backend {
 public:
   virtual ~kv_backend() noexcept {}
   virtual void put(const char *key, const char *value) = 0;
+  void put(const char *key, const std::string &value) {
+    this->put(key, value.c_str());
+  }
   virtual bool del(const char *key) = 0;
   // Consider requiring C++17 for std::optional
   virtual bool get(const char *key, std::string &value) = 0;
   virtual void list(std::ostream &, const std::string &sep) = 0;
+  virtual void begin() = 0;
+  virtual void commit() = 0;
 };
 
 enum class be { SQLITE3_DB, GDBM_DB };

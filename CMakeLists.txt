@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.6)
-project(kv VERSION 0.9
+project(kv VERSION 0.10.0
            DESCRIPTION "Key-Value database front end"
            LANGUAGES CXX)
 
